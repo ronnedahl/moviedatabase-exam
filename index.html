@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Movie Database</title>
+    <link rel="stylesheet" href="./styles/style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="content-wrapper header__flex">
+            <a href="index.html"><img src="./res/logo.png" class="img-logo" alt="logotype"></a>
+            <form>
+                <input type = "text" class = "form-control" placeholder="Search Movie Title ..." id = "movie-search-box">
+                <button class="header__form-btn" id="searchBtn">Search</button>
+            </form>       
+            <button class="header__fav-btn" id="favBtn">Favorites</button> 
+        </div>
+    </header>
+
+    <section class="favorites-container" id="favoritesContainer">
+        <div class="content-wrapper favorites" id="favorites">
+            
+        </div>
+    </section>
+     
+    <!-- Search Results d-none -->
+    
+    <div class="d-none">
+    <div class="wrapper-cont-list">
+        <div class = "search-list" id = "search-list">
+            <!-- list here -->
+            <!-- <div class = "search-list-item">
+                <div class = "search-item-thumbnail">
+                    <img src = "medium-cover.jpg">
+                </div>
+                <div class = "search-item-info">
+                    <h3>Guardians of the Galaxy Vol. 2</h3>
+                    <p>2017</p>
+                </div>
+            </div>  -->
+        </div>
+        </div>
+         <!-- result container -->
+         </div>
+         <div class = "container d-none-result ">
+            <div class = "result-container">
+                <div class = "result-grid" id = "result-grid">
+                    <!-- movie information here -->
+                    <!-- <div class = "movie-poster">
+                        <img src = "medium-cover.jpg" alt = "movie poster">
+                    </div>
+                    <div class = "movie-info">
+                        <h3 class = "movie-title">Guardians of the Galaxy Vol. 2</h3>
+                        <ul class = "movie-misc-info">
+                            <li class = "year">Year: 2017</li>
+                            <li class = "rated">Ratings: PG-13</li>
+                            <li class = "released">Released: 05 May 2017</li>
+                        </ul>
+                        <p class = "genre"><b>Genre:</b> Action, Adventure, Comedy</p>
+                        <p class = "writer"><b>Writer:</b> James Gunn, Don Abnett, Andy Lanning</p>
+                        <p class = "actors"><b>Actors: </b>Chris Pratt, Zoe Saldana, Dave Bautista</p>
+                        <p class = "plot"><b>Plot:</b> The Guardians struggle to keep together as a team while dealing with their personal family issues, notably Star-Lord's ecounter with his father the ambitious celestial being Ego.</p>
+                        <p class = "language"><b>Language:</b> English</p>
+                        <p class = "awards"><b><i class = "fas fa-award"></i></b> Nominated for 1 Oscar</p>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+        <!-- end of result container -->
+   
+    <!-- Trailer Section -->
+    <div class="visible cont-wrapper">
+        <div class="content-wrapper">
+            <article class="carousel" data-carousel>
+                <button class="carousel__btn prev" data-carousel-btn="prev">&#8612;</button>
+                <button class="carousel__btn next" data-carousel-btn="next">&#8614;</button>
+                <ul id="youtube-slides" data-slides>
+                    
+                </ul>
+            </article>
+        </div>
+  
+
+    <!-- Popular movies section -->
+   
+        <div class="content-wrapper popular">
+            <h2 class="popular__title">My Movie Database Top 20</h2>
+            <section class="popular__card-container" id="popularCardContainer">
+                <div class="popular__img-wrapper">
+                
+                 <h3 id="text-center">20 top videos Movie Database</h3>
+                    <div class="popular__img-container">
+               
+             
+            </div>
+            </div>
+                
+           
+        </div>
+        </div>
+   
+        
+            
+           
+     <footer>
+
+      <p>copywrighted 2024 made by folkuniversitetet karlstad</p>
+
+     </footer>
+           
+
+
+    
+
+
+    
+
+
+    <script src="./scripts/script.js"></script>
+   
+
+</body>
+</html>
