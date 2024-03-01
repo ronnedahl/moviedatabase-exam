@@ -95,20 +95,12 @@ h3{
 }
 
 .header input {
-    width: 60%;
-    padding: 1rem;
-    border-radius: 2rem 0 0 2rem;
-    border: none;
+  width: 60%;
+  padding: 1rem;
+  border-radius: 2rem 0 0 2rem;
+  border: none;
 }
 
-form .form-control{
-
-    width: 60%;
-    padding: 1rem;
-    border-radius: 2rem 0 0 2rem;
-   
-
-}
 
 .header__form-btn {
     border-radius: 0 2rem 2rem 0;
@@ -231,6 +223,13 @@ form .form-control{
     align-items: center;
     
     
+}
+
+.error-handling{
+  display: none;
+  width: 400px;
+  height: 500px;
+  background-color: blue;
 }
 
  
@@ -490,13 +489,19 @@ background-color: #1f1f1f;
   border-radius: 1px;
 
 }
+.wrapper-cont-list{
 
+  width: 100%;
+  padding:0;
+  margin:0;
+}
 
  
 
 .header input{
 
-  padding:0.3rem 2.4rem;
+  padding:0.3rem 2.8rem;
+  border-radius:10px 0px 0px 10px;
 
   
 }
@@ -504,6 +509,61 @@ background-color: #1f1f1f;
 
   width:100%;
 }
+
+.movie-poster{
+
+  width: 80%;
+}
+
+.movie-info{
+
+  width:100%;
+  margin:0;
+  padding:0;
+}
+.container{
+
+  height: 70vh;
+}
+
+.result-container{
+
+  width: 80%;
+  background-color: black;
+}
+.movie-poster img{
+
+  margin:0;
+  padding:0;
+  
+}
+.movie-info{
+
+  padding-top:1rem;
+  padding-bottom:2.5rem;
+}
+.movie-title{
+
+  font-size: 1.3rem;
+}
+
+.header .img-logo{
+  display: none;
+  width:70px;
+}
+.header__fav-btn{
+
+  font-size:0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.05rem;
+  margin-right: 15px;
+}
+.header__form-btn{
+
+  width: 2.6rem;
+}
+
+
 }
 
 /* End of  Media Queries */
@@ -545,6 +605,7 @@ background-color: #1f1f1f;
 }
 
 footer{
+   
     display: flex;
     justify-content: center;
     align-items: center;
