@@ -1,7 +1,7 @@
 
-
+//import { setupCarousel } from "./carousel.js"; 
 window.addEventListener('load', () => {
-    console.log('load');
+   
     //Förslagsvis anropar ni era funktioner som skall sätta lyssnare, rendera objekt osv. härifrån
     
     
@@ -23,6 +23,7 @@ const containerRef = document.querySelector('.container')
 const form = document.querySelector('form')
 const dNone = document.querySelector('.d-none')
 const dVisible = document.querySelector('.visible')
+const resultContainer = document.querySelector('.result-container')
 
 
 
@@ -68,7 +69,7 @@ function setupCarousel() {
     const buttons = document.querySelectorAll('[data-carousel-btn]');
     buttons.forEach(btn => {
         btn.addEventListener('click', () => {
-            const offset = btn.dataset.carouselBtn === 'next' ? 1 : -1;
+             const offset = btn.dataset.carouselBtn === 'next' ? 1 : -1;
             const slides = btn.closest('[data-carousel').querySelector('[data-slides');
             const activeSlide = slides.querySelector('[data-active]');
             let newIndex = [...slides.children].indexOf(activeSlide) + offset;
@@ -76,14 +77,14 @@ function setupCarousel() {
             if (newIndex < 0) {
                 newIndex = slides.children.length - 1;
             } else if (newIndex >= slides.children.length) {
-                newIndex = 0;
-            }
+                 newIndex = 0;
+             }
 
-            slides.children[newIndex].dataset.active = true;
+             slides.children[newIndex].dataset.active = true;
             delete activeSlide.dataset.active;
-        });
-    });
-}
+         });
+     });
+ }
 
 
 // Listar youtube-videos 5 stycken slumpmässigt
@@ -114,6 +115,7 @@ function appendYoutubeSlides(listofGen) {
 
 
 let newPostArray =[]
+let movieArray =[]
 
 const posterDB = async () => {
     
@@ -124,6 +126,13 @@ const posterDB = async () => {
     dataMovie.map(moviePoster =>{
     newPostArray.push(moviePoster.poster)
     })
+
+    dataMovie.map(movieSearch =>{
+        
+        movieArray.push(movieSearch.title)
+    })
+
+
    
     postImage()
 }
@@ -162,16 +171,16 @@ function searchMovies(){
     const dNoneResult = document.querySelector('.d-none-result')
     
     form.addEventListener('submit',function(event){
-        dNoneResult.classList.remove('d-none-result')
+        
         
         event.preventDefault()
-        searchTerm =""
+        
         dNone.classList.remove('d-none')
         
         dVisible.classList.remove('visible')
         dVisible.classList.add('d-none')
-        dNoneResult.classList.add('d-none-result')
-        dNoneResult.classList.remove('d-none-result')
+        //dNoneResult.classList.add('d-none-result')
+        //dNoneResult.classList.remove('d-none-result')
        
         findMovies()
     
@@ -184,14 +193,29 @@ async function loadMovies(searchTerm) {
     const URL = `http://www.omdbapi.com/?s=${searchTerm}&tt3896198&apikey=33183ef7`
     const resp = await fetch(`${URL}`)
     const data = await resp.json()
-   // console.log(data)
-    if(data.Response == "True") displayMovieList(data.Search);
     
+    if(data.Response == "True") displayMovieList(data.Search);
+  
+
+    // let checkedMovie = movieArray.some(movieTitle => movieTitle === searchTerm)
+    // console.log(movieTitle)
+    // if(checkedMovie === true){
+    //     console.log(searchTerm)
+    //     displayMovieList(data.Search);
+        
+    // } else{
+    //     console.log('this movie dont exists')
+        
+    // }
+
+
 }
 
 function findMovies(){
-   
+    
     let searchTerm = (movieSearchBox.value).trim();
+    
+    
     if(searchTerm.length > 0){
         searchList.classList.remove('hide-search-list');
         loadMovies(searchTerm);
@@ -204,7 +228,9 @@ function findMovies(){
 
 //Display Movies
 function displayMovieList(movies){
-    
+    //resultGrid.classList.add('d-none')
+    resultGrid.innerHTML=""
+    //resultContainer.classList.add('d-none')
     searchList.innerHTML = "";
     
     for(let i = 0; i < movies.length; i++){
@@ -229,8 +255,13 @@ function displayMovieList(movies){
             <p>${movies[i].Year}</p>
         </div>
         `;
+        
+        //resultContainer.classList.remove('d-none')
         searchList.appendChild(movieListItem);
-    } 
+        
+
+    }
+    
    loadMovieDetails()
 }
 function loadMovieDetails(){
@@ -243,7 +274,7 @@ function loadMovieDetails(){
             
             const result = await fetch(`http://www.omdbapi.com/?i=${movie.dataset.id}&tt3896198&apikey=33183ef7`);
             const movieDetails = await result.json();
-            // console.log(movieDetails);
+            
             displayMovieDetails(movieDetails);
         });
     });
