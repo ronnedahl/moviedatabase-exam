@@ -125,27 +125,27 @@ const posterDB = async () => {
     postImage()
 }
 
- function setupCarousel() {
+function setupCarousel() {
 
     const buttons = document.querySelectorAll('[data-carousel-btn]');
     buttons.forEach(btn => {
-         btn.addEventListener('click', () => {
-             const offset = btn.dataset.carouselBtn === 'next' ? 1 : -1;
+        btn.addEventListener('click', () => {
+            const offset = btn.dataset.carouselBtn === 'next' ? 1 : -1;
             const slides = btn.closest('[data-carousel').querySelector('[data-slides');
             const activeSlide = slides.querySelector('[data-active]');
-             let newIndex = [...slides.children].indexOf(activeSlide) + offset;
+            let newIndex = [...slides.children].indexOf(activeSlide) + offset;
 
-             if (newIndex < 0) {
+            if (newIndex < 0) {
                 newIndex = slides.children.length - 1;
             } else if (newIndex >= slides.children.length) {
                 newIndex = 0;
-           }
+            }
 
-             slides.children[newIndex].dataset.active = true;
-             delete activeSlide.dataset.active;
+            slides.children[newIndex].dataset.active = true;
+            delete activeSlide.dataset.active;
         });
-     });
- }
+    });
+}
 
 
 
@@ -182,13 +182,10 @@ function postImage() {
 function searchMovies() {
 
     form.addEventListener('submit', function (e) {
-         e.preventDefault()
-         
-        let valueSearch = movieSearchBox.value
-        console.log(`det här är sökningen ${valueSearch}`)
-         if(!valueSearch) return
+        e.preventDefault()
+
         
-        
+
         dNone.classList.remove('d-none')
 
         dVisible.classList.remove('visible')
@@ -203,46 +200,53 @@ function searchMovies() {
 
         // Laddar filmer från API
         async function loadMovies(searchTerm) {
-            
+            errorMessage.innerHTML=""
             const URL = `http://www.omdbapi.com/?s=${searchTerm}&apikey=33183ef7`
             const resp = await fetch(`${URL}`)
             const data = await resp.json()
 
             try {
+                
+                let searchValue = movieSearchBox.value
                 const resp = await fetch(URL);
                 const data = await resp.json();
-                // const jsonTest = JSON.stringify(data.Search)
-                // jsonTest.forEach((searchTitle) => {
-                 
-                // })
+               
+                const newSearch = data.Search
+                newSearch.forEach((newTitle) =>{
+                   if(searchValue !== newTitle.Title){
 
+                    searchMovies()
+                   }
                    
-               
-               
-                if (data.Response === "True") {
-                    displayMovieList(data.Search);
-                    const jsonTest = JSON.stringify(data.Search)
+
+
+                } )
+
+                  displayMovieList(data.Search);
                     
-                    
-                    
-                } else {
-                    
-                    wrongSearchTerm()
-                }
+
+
+
+                
+
+                    // wrongSearchTerm()
+                
             } catch (error) {
                 errorMessage.innerHTML = `<section class="error-container">
                    <article class="error-container__text">
               
-                      <h1>Something went wrong, please try agian.</h1>
+                      <h1>Something went wrong, please try again.</h1>
                    </article> 
               
               
                 </section> 
         `
+               dNone.classList.add('d-none')
+
+
+            }
 
             
-            
-            }
         }
 
         function wrongSearchTerm() {
@@ -252,7 +256,7 @@ function searchMovies() {
             document.querySelector('#wrap-list').classList.add('d-none')
 
 
-            
+
             errorMessage.innerHTML = `<section class="error-container">
                    <article class="error-container__text">
               
@@ -289,7 +293,7 @@ function searchMovies() {
 
         //Display Movies
         function displayMovieList(movies) {
-           
+
             document.querySelector('#res').classList.add('d-none')
 
             resultGrid.innerHTML = ""
@@ -297,7 +301,7 @@ function searchMovies() {
 
             searchList.innerHTML = "";
             for (let i = 0; i < movies.length; i++) {
-                
+
 
                 let movieListItem = document.createElement('div');
                 movieListItem.dataset.id = movies[i].imdbID; // setting movie id in  data-id
@@ -338,7 +342,7 @@ function searchMovies() {
                     movieSearchBox.value = "";
                     const result = await fetch(`http://www.omdbapi.com/?i=${movie.dataset.id}&tt3896198&apikey=33183ef7`);
                     const movieDetails = await result.json();
-                   
+
                     displayMovieDetails(movieDetails);
                 });
             });
