@@ -43,6 +43,7 @@ body {
 .content-wrapper {
   max-width: 1280px;
   width:100%;
+  margin: 0 auto;
 }
 
 
@@ -334,7 +335,7 @@ background-color: #1f1f1f;
 
 /* movie result */
 .result-container{
-  width: 1200px;
+  width: 1280px;
   
   background-color: var(--light-dark-color);
  
@@ -628,6 +629,13 @@ footer{
  
   
 }
+
+.center-text-footer{
+
+  text-align: center;
+}
+
+
 
 
 }

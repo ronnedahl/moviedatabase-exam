@@ -25,7 +25,7 @@ const form = document.querySelector('form')
 const dNone = document.querySelector('.d-none')
 const dVisible = document.querySelector('.visible')
 const resultContainer = document.querySelector('.result-container')
-
+const errorMessage = document.querySelector('.wrapper-error-cont')
 
 
 const fetchMovies = async () => {
@@ -56,7 +56,15 @@ const fetchMovies = async () => {
 
         appendYoutubeSlides(listGenerated)
     } catch (error) {
-        console.error('fel vid hämtning av filmdata', error)
+        errorMessage.innerHTML = `<section class="error-container">
+        <article class="error-container__text">
+   
+           <h1>Something went wrong when try getting the movie.</h1>
+        </article> 
+   
+   
+     </section> 
+`
 
     }
 
@@ -174,8 +182,13 @@ function postImage() {
 function searchMovies() {
 
     form.addEventListener('submit', function (e) {
-        e.preventDefault()
-        console.log('hejejeejjejejejejej')
+         e.preventDefault()
+         
+        let valueSearch = movieSearchBox.value
+        console.log(`det här är sökningen ${valueSearch}`)
+         if(!valueSearch) return
+        
+        
         dNone.classList.remove('d-none')
 
         dVisible.classList.remove('visible')
@@ -190,7 +203,7 @@ function searchMovies() {
 
         // Laddar filmer från API
         async function loadMovies(searchTerm) {
-            console.log(`här laddas movies igen tror jag ${searchTerm}`)
+            
             const URL = `http://www.omdbapi.com/?s=${searchTerm}&apikey=33183ef7`
             const resp = await fetch(`${URL}`)
             const data = await resp.json()
@@ -198,15 +211,37 @@ function searchMovies() {
             try {
                 const resp = await fetch(URL);
                 const data = await resp.json();
+                // const jsonTest = JSON.stringify(data.Search)
+                // jsonTest.forEach((searchTitle) => {
+                 
+                // })
 
+                   
+               
+               
                 if (data.Response === "True") {
                     displayMovieList(data.Search);
+                    const jsonTest = JSON.stringify(data.Search)
+                    
+                    
+                    
                 } else {
-                    console.log('No movies found. Please try a different search term.');
+                    
                     wrongSearchTerm()
                 }
             } catch (error) {
-                console.error('Error fetching movie data:', error);
+                errorMessage.innerHTML = `<section class="error-container">
+                   <article class="error-container__text">
+              
+                      <h1>Something went wrong, please try agian.</h1>
+                   </article> 
+              
+              
+                </section> 
+        `
+
+            
+            
             }
         }
 
@@ -217,7 +252,7 @@ function searchMovies() {
             document.querySelector('#wrap-list').classList.add('d-none')
 
 
-            const errorMessage = document.querySelector('.wrapper-error-cont')
+            
             errorMessage.innerHTML = `<section class="error-container">
                    <article class="error-container__text">
               
@@ -254,7 +289,7 @@ function searchMovies() {
 
         //Display Movies
         function displayMovieList(movies) {
-            console.log(`här är det movies ${movies}`)
+           
             document.querySelector('#res').classList.add('d-none')
 
             resultGrid.innerHTML = ""
@@ -262,7 +297,7 @@ function searchMovies() {
 
             searchList.innerHTML = "";
             for (let i = 0; i < movies.length; i++) {
-                console.log(`i forloopen movies ${i}`)
+                
 
                 let movieListItem = document.createElement('div');
                 movieListItem.dataset.id = movies[i].imdbID; // setting movie id in  data-id
@@ -303,7 +338,7 @@ function searchMovies() {
                     movieSearchBox.value = "";
                     const result = await fetch(`http://www.omdbapi.com/?i=${movie.dataset.id}&tt3896198&apikey=33183ef7`);
                     const movieDetails = await result.json();
-                    console.log(`nu är vi på moviedetails ${movieDetails}`)
+                   
                     displayMovieDetails(movieDetails);
                 });
             });
