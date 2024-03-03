@@ -1,5 +1,5 @@
 
-import { setupCarousel } from "./carousel.js";
+//import { setupCarousel } from "./carousel.js";
 
 window.addEventListener('load', () => {
 
@@ -116,6 +116,34 @@ const posterDB = async () => {
 
     postImage()
 }
+
+ function setupCarousel() {
+
+    const buttons = document.querySelectorAll('[data-carousel-btn]');
+    buttons.forEach(btn => {
+         btn.addEventListener('click', () => {
+             const offset = btn.dataset.carouselBtn === 'next' ? 1 : -1;
+            const slides = btn.closest('[data-carousel').querySelector('[data-slides');
+            const activeSlide = slides.querySelector('[data-active]');
+             let newIndex = [...slides.children].indexOf(activeSlide) + offset;
+
+             if (newIndex < 0) {
+                newIndex = slides.children.length - 1;
+            } else if (newIndex >= slides.children.length) {
+                newIndex = 0;
+           }
+
+             slides.children[newIndex].dataset.active = true;
+             delete activeSlide.dataset.active;
+        });
+     });
+ }
+
+
+
+
+
+
 // skapar bilder och lägger till så att det 
 // det går att göra bilderna till länkar.
 function postImage() {
@@ -127,7 +155,7 @@ function postImage() {
         const createTitle = document.createElement("h4")
         createTitle.src = src.Title
         const createLink = document.createElement("a");
-        createLink.href = "#"; 
+        createLink.href = "#";
         createLink.appendChild(createImg);
 
         imageRef.appendChild(createLink);
@@ -145,16 +173,14 @@ function postImage() {
 
 function searchMovies() {
 
-    form.addEventListener('submit', function (event) {
-
-
-        event.preventDefault()
-
+    form.addEventListener('submit', function (e) {
+        e.preventDefault()
+        console.log('hejejeejjejejejejej')
         dNone.classList.remove('d-none')
 
         dVisible.classList.remove('visible')
         dVisible.classList.add('d-none')
-        
+
 
         findMovies()
 
@@ -164,40 +190,58 @@ function searchMovies() {
 
         // Laddar filmer från API
         async function loadMovies(searchTerm) {
+            console.log(`här laddas movies igen tror jag ${searchTerm}`)
             const URL = `http://www.omdbapi.com/?s=${searchTerm}&apikey=33183ef7`
             const resp = await fetch(`${URL}`)
             const data = await resp.json()
 
-            if (data.Response == "True") displayMovieList(data.Search);
-            else {
-                wrongSearchTerm()
+            try {
+                const resp = await fetch(URL);
+                const data = await resp.json();
+
+                if (data.Response === "True") {
+                    displayMovieList(data.Search);
+                } else {
+                    console.log('No movies found. Please try a different search term.');
+                    wrongSearchTerm()
+                }
+            } catch (error) {
+                console.error('Error fetching movie data:', error);
             }
+        }
+
+        function wrongSearchTerm() {
+            searchList.innerHTML = "";
+            document.querySelector('.search-list').innerHTML = ""
+            document.querySelector('#res').classList.add('d-none')
+            document.querySelector('#wrap-list').classList.add('d-none')
+
+
+            const errorMessage = document.querySelector('.wrapper-error-cont')
+            errorMessage.innerHTML = `<section class="error-container">
+                   <article class="error-container__text">
+              
+                      <h1>Sorry The movie you search for dont exist</h1>
+                   </article> 
+              
+              
+                </section> 
+        `
+
+
+
+
+
+            loadMovies()
 
         }
-            function wrongSearchTerm() {
 
-                document.querySelector('.search-list').innerHTML = ""
-                document.querySelector('#res').classList.add('d-none')
-                document.querySelector('.wrapper-cont-list').classList.add('d-none')
-                const body = document.querySelector('body')
-                  const newDiv = document.createElement("div")
-                  newDiv.textContent = "Sorry the movie your search does not exist" 
-                  console.log(newDiv.innerHTML)
-                 
-                  newDiv.style.color="white";
-                  body.appendChild.newDiv
-                
-                searchMovies()
-                
-            }
-           
- 
-        
+
+
         function findMovies() {
 
             let searchTerm = (movieSearchBox.value).trim();
-
-
+            console.log(searchTerm)
             if (searchTerm.length > 0) {
                 searchList.classList.remove('hide-search-list');
                 loadMovies(searchTerm);
@@ -210,19 +254,20 @@ function searchMovies() {
 
         //Display Movies
         function displayMovieList(movies) {
+            console.log(`här är det movies ${movies}`)
             document.querySelector('#res').classList.add('d-none')
-            //resultGrid.classList.add('d-none')
+
             resultGrid.innerHTML = ""
-            //resultContainer.classList.add('d-none')
+
+
             searchList.innerHTML = "";
-
             for (let i = 0; i < movies.length; i++) {
-
+                console.log(`i forloopen movies ${i}`)
 
                 let movieListItem = document.createElement('div');
                 movieListItem.dataset.id = movies[i].imdbID; // setting movie id in  data-id
 
-                let moviePoster = ""
+                //let moviePoster = ""
                 movieListItem.classList.add('search-list-item');
                 if (movies[i].Poster != "N/A")
                     moviePoster = movies[i].Poster;
@@ -231,7 +276,7 @@ function searchMovies() {
 
                 movieListItem.innerHTML = `
         <div class = "search-item-thumbnail">
-            <img src = "${moviePoster}">
+            <img src = "${moviePoster}" alt="medium movie poster">
         </div>
         <div class = "search-item-info">
             <h3>${movies[i].Title}</h3>
@@ -247,17 +292,18 @@ function searchMovies() {
 
             loadMovieDetails()
         }
+
         function loadMovieDetails() {
             const searchListMovies = searchList.querySelectorAll('.search-list-item');
             searchListMovies.forEach(movie => {
                 movie.addEventListener('click', async () => {
                     // console.log(movie.dataset.id);
-                    movieSearchBox.value = "";
-                    searchList.classList.add('hide-search-list');
 
+                    searchList.classList.add('hide-search-list');
+                    movieSearchBox.value = "";
                     const result = await fetch(`http://www.omdbapi.com/?i=${movie.dataset.id}&tt3896198&apikey=33183ef7`);
                     const movieDetails = await result.json();
-
+                    console.log(`nu är vi på moviedetails ${movieDetails}`)
                     displayMovieDetails(movieDetails);
                 });
             });
